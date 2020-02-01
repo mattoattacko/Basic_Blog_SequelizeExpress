@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Article = require('../models').Article; // We want to import the Article model and all the ORM methods to use, accessed with ".Article"
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
