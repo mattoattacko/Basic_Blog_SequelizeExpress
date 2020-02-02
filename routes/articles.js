@@ -19,26 +19,38 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 /* Create a new article form. */
+
+// Runs when you click "create new article" button.
 router.get('/new', (req, res) => {
   res.render("articles/new", { article: {}, title: "New Article" });
 });
 
 /* POST create article. */
+//
+// Route responsible for creating and posting a new article. 
+// the req body property returns an object containing the key value pairs of data submitted in the request body. So the 'form' data. 
 router.post('/', asyncHandler(async (req, res) => {
-  res.redirect("/articles/");
+  const article = await Article.create();
+  res.redirect("/articles/" + article.id);
 }));
 
 /* Edit article form. */
+//
+//
 router.get("/:id/edit", asyncHandler(async(req, res) => {
   res.render("articles/edit", { article: {}, title: "Edit Article" });
 }));
 
 /* GET individual article. */
+//
+// This GET route renders the articles/show view, and displays an article based on an 'id' parameter in the URL path.
 router.get("/:id", asyncHandler(async (req, res) => {
-  res.render("articles/show", { article: {}, title: "Article Title" }); 
+  const article = await Article.findByPk(req.params.id);
+  res.render("articles/show", { article, title: article.title }); 
 }));
 
 /* Update an article. */
+//
 router.post('/:id/edit', asyncHandler(async (req, res) => {
   res.redirect("/articles/");
 }));
