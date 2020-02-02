@@ -30,7 +30,7 @@ router.get('/new', (req, res) => {
 // Route responsible for creating and posting a new article. 
 // the req body property returns an object containing the key value pairs of data submitted in the request body. So the 'form' data. 
 router.post('/', asyncHandler(async (req, res) => {
-  const article = await Article.create();
+  const article = await Article.create(req.body);
   res.redirect("/articles/" + article.id);
 }));
 
