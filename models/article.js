@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
       return date;
     }
     shortDescription() {
-      const shortDesc = this.body.length > 200 ? this.body.substring(0,200) + '...' : this.body;
+      const shortDesc = this.body.length > 200 ? this.body.substring(0, 200) + '...' : this.body;
       return shortDesc;
     }
   }
