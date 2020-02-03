@@ -14,8 +14,13 @@ function asyncHandler(cb){
 }
 
 /* GET articles listing. */
+//
+// This route gets all articles 
 router.get('/', asyncHandler(async (req, res) => {
-  res.render("articles/index", { articles: {}, title: "Sequelize-It!" });
+  const articles = await Article.findAll({
+    order: [["createdAt", "DESC"]]
+  });
+  res.render("articles/index", { articles, title: "Sequelize-It!" });
 }));
 
 /* Create a new article form. */
