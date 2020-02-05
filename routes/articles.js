@@ -44,7 +44,11 @@ router.post('/', asyncHandler(async (req, res) => {
 //
 router.get("/:id/edit", asyncHandler(async(req, res) => {
   const article = await Article.findByPk(req.params.id);
-  res.render("articles/edit", { article, title: "Edit Article" });
+  if(article) {
+    res.render("articles/edit", { article, title: "Edit Article" });
+  } else {
+    res.sendStatus(404);
+  }
 }));
 
 /* GET individual article. */
@@ -52,15 +56,23 @@ router.get("/:id/edit", asyncHandler(async(req, res) => {
 // This GET route renders the articles/show view, and displays an article based on an 'id' parameter in the URL path.
 router.get("/:id", asyncHandler(async (req, res) => {
   const article = await Article.findByPk(req.params.id);
-  res.render("articles/show", { article, title: article.title }); 
+  if(article) {
+    res.render("articles/show", { article, title:  article.title }); 
+  } else {
+    res.sendStatus(404);  
+  } 
 }));
 
 /* Update an article. */
 //
 router.post('/:id/edit', asyncHandler(async (req, res) => {
   const article = await Article.findByPk(req.params.id);
-  await article.update(req.body);
-  res.redirect("/articles/" + article.id);
+  if (article) {
+    await article.update(req.body);
+    res.redirect("/articles/" + article.id);
+  } else {
+    res.sendStatus(404);
+  }
 }));
 
 /* Delete article form. */
@@ -76,8 +88,12 @@ router.get("/:id/delete", asyncHandler(async (req, res) => {
 // Actually deletes the article 
 router.post('/:id/delete', asyncHandler(async (req ,res) => {
   const article = await Article.findByPk(req.params.id);
-  await article.destroy();
-  res.redirect("/articles");
+  if (article) {
+    await article.destroy();
+    res.redirect("/articles");
+  } else {
+    res.sendStatus(404);
+  }
 }));
 
 module.exports = router;
