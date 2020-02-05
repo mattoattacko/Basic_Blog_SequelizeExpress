@@ -33,10 +33,22 @@ router.get('/new', (req, res) => {
 /* POST create article. */
 //
 // Route responsible for creating and posting a new article. 
-// the req body property returns an object containing the key value pairs of data submitted in the request body. So the 'form' data. 
+// the req.body property returns an object containing the key value pairs of data submitted in the request body. So the 'form' data. 
 router.post('/', asyncHandler(async (req, res) => {
-  const article = await Article.create(req.body);
-  res.redirect("/articles/" + article.id);
+  let article;
+  try {
+    article = await Article.create(req.body);
+    res.redirect("/articles/" + article.id);
+  } catch (error) {
+    if(error.name === "SequelizeValidationError") { //checking the error
+      article = await Article.build(req.body);
+      res.render("articles/new", { article, errors: error.errors, title: "New Article" })
+    } else {
+      throw error; // error caught in the asyncHandler's catch block 
+    }
+  }
+  
+  
 }));
 
 /* Edit article form. */
